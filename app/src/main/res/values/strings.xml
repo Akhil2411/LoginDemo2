@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LoginDemo</string>
+    <string name="the_number_of_attempts_remaining">The number of attempts remaining:</string>
+    <string name="login">login</string>
+    <string name="enter_password">Enter password</string>
+    <string name="enter_the_user_name">Enter the user name</string>
+</resources>
