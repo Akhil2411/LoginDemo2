@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
        //id assign ends////////////////////////////////////////
 
         firebaseAuth=FirebaseAuth.getInstance();  //get an instance of the firebase and assign it to firebaseAuth
+
+
         progressDialog=new ProgressDialog(this); //get an instance of progress dialogue
 
 

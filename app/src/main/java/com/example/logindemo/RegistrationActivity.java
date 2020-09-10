@@ -3,6 +3,7 @@ package com.example.logindemo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button SignUp;
     private TextView login;
     private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         firebaseAuth=FirebaseAuth.getInstance(); //getting a firebase instance
+        progressDialog=new ProgressDialog(this); //instance of progressdialog
 
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -50,16 +53,26 @@ public class RegistrationActivity extends AppCompatActivity {
                    String user_email=Email.getText().toString().trim();
                    String user_password=Pass.getText().toString().trim();
 
+                   progressDialog.setMessage("Signing Up");
+                   progressDialog.show();
+
                    firebaseAuth.createUserWithEmailAndPassword(user_email,user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                        @Override
                        public void onComplete(@NonNull Task<AuthResult> task) {
                            if (task.isSuccessful()) {
+
+                               progressDialog.dismiss();
+
                                Log.d("tag","done");
+
                                Toast.makeText(RegistrationActivity.this, "Registration Successfull", Toast.LENGTH_SHORT).show();
                                startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
                            }
                            else {
+                               progressDialog.dismiss();
+
                                Log.d("tag","undone");
+
                                Toast.makeText(RegistrationActivity.this, "Registration not Successfull", Toast.LENGTH_SHORT).show();
                            }
                        }
