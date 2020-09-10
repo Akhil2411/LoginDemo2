@@ -30,10 +30,10 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        setUpVariables();
+        setUpVariables(); //calling a function to instantiate variables
 
 
-        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseAuth=FirebaseAuth.getInstance(); //getting a firebase instance
 
 
         login.setOnClickListener(new View.OnClickListener() {
