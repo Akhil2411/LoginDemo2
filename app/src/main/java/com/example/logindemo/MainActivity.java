@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 /////////////////////////////user already logged in? then direct to second activity process completed///////////////////////
 
-        login.setOnClickListener(new View.OnClickListener() {    //login button clicked activity defined
+        login.setOnClickListener(new View.OnClickListener() {    //activity when login button is clicked
             @Override
             public void onClick(View view) {
 
