@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegistrationActivity extends AppCompatActivity {
     private EditText UserName;
@@ -63,15 +64,14 @@ public class RegistrationActivity extends AppCompatActivity {
 
                                progressDialog.dismiss();
 
-                               Log.d("tag","done");
-
-                               Toast.makeText(RegistrationActivity.this, "Registration Successfull", Toast.LENGTH_SHORT).show();
-                               startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+//                               Log.d("tag","done");
+////
+////                               Toast.makeText(RegistrationActivity.this, "Registration Successfull", Toast.LENGTH_SHORT).show();
+////                               startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+                               sendEmailVerification();
                            }
                            else {
                                progressDialog.dismiss();
-
-                               Log.d("tag","undone");
 
                                Toast.makeText(RegistrationActivity.this, "Registration not Successfull", Toast.LENGTH_SHORT).show();
                            }
@@ -102,6 +102,28 @@ public class RegistrationActivity extends AppCompatActivity {
             result=true;
         }
         return result;
+    }
+
+    private void sendEmailVerification(){
+        FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();   //get the user trying to register
+
+        if(firebaseUser!=null){
+
+
+            firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {  //send a verification email
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(RegistrationActivity.this,"Succesfully Registered,Verification Mail send",Toast.LENGTH_LONG).show();
+                        firebaseAuth.signOut();
+                        finish();
+                        startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+                    }else{
+                        Toast.makeText(RegistrationActivity.this,"Unable to send Verification Mail",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
 }

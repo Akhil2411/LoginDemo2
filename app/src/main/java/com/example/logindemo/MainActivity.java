@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.session.MediaSession;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -71,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Validate(UserName.getText().toString(),Password.getText().toString()); //passes login validation to the function validation
+                if (ErrorFree()) {
+
+                    Validate(UserName.getText().toString(), Password.getText().toString()); //passes login validation to the function validation
+                }
             }
 
         });
@@ -85,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void Validate(String UserName,String UserPass){  //user and password validation
-
         progressDialog.setMessage("Loading"); //displayed at the time of loading at time when button clicked
         progressDialog.show();  //to show the progress dialogue
 
@@ -96,19 +99,59 @@ public class MainActivity extends AppCompatActivity {
 
                   progressDialog.dismiss(); //if task succesfull end the process dialogue
 
-                  Toast.makeText(MainActivity.this,"Login Successfull",Toast.LENGTH_SHORT).show();
+//                  Toast.makeText(MainActivity.this,"Login Successfull",Toast.LENGTH_SHORT).show();
+//
+//                  startActivity(new Intent(MainActivity.this,SecondActivity.class)); //move to next activity
 
-                  startActivity(new Intent(MainActivity.this,SecondActivity.class)); //move to next activity
+                  checkEmailVerification();  //invoke the function
 
               }else{ //if task is not completed
 
                   progressDialog.dismiss();
 
-                  Toast.makeText(MainActivity.this,"Login Failed",Toast.LENGTH_SHORT).show();
+                  Toast.makeText(MainActivity.this,"Invalid Login",Toast.LENGTH_SHORT).show();
               }
 
             }
         });
 
+    }
+
+
+
+    private boolean ErrorFree(){
+        boolean result=false;
+
+        String User=UserName.getText().toString();
+        String password=Password.getText().toString();
+
+        if(User.isEmpty() || password.isEmpty()){
+            Toast.makeText(this,"Please Enter the Credentials",Toast.LENGTH_SHORT).show();
+
+        }else{
+            result=true;
+        }
+        return result;
+
+    }
+
+
+
+
+
+    private void checkEmailVerification(){
+        FirebaseUser firebaseUser = firebaseAuth.getInstance().getCurrentUser();   //get instance of already created user
+                                                                                   //user already created so we use getInstance
+
+        Boolean emailFlag= firebaseUser.isEmailVerified(); //true if user has already verified his email else false
+
+        if(emailFlag){
+            finish();
+            startActivity(new Intent(MainActivity.this,SecondActivity.class));
+            Toast.makeText(this,"Login Succesfull",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this,"Please verify Your Email",Toast.LENGTH_SHORT).show();
+            firebaseAuth.signOut(); //signOut of the firebase
+        }
     }
 }
