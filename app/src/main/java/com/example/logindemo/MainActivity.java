@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView Reg;
     private FirebaseAuth firebaseAuth; //creating a variable for firebase database
     private ProgressDialog progressDialog; //creating a variable for displaying at loading time
+    private TextView ForgotPass;
 
     //variable declaration ends
 
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         Password=(EditText) findViewById(R.id.password);
         login=(Button) findViewById(R.id.btn);
         Reg=(TextView)findViewById(R.id.userSign);
+        ForgotPass=(TextView)findViewById(R.id.frgtPass);
 
        //id assign ends////////////////////////////////////////
 
@@ -87,6 +89,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,RegistrationActivity.class)); //directs to registration activity
             }
         });
+
+
+
+        ForgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,PasswordActivity.class));
+            }
+        });
+
+
+
     }
     private void Validate(String UserName,String UserPass){  //user and password validation
         progressDialog.setMessage("Loading"); //displayed at the time of loading at time when button clicked
