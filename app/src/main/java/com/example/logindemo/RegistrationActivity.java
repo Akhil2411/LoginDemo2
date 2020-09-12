@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationActivity extends AppCompatActivity {
     private EditText UserName;
@@ -27,6 +30,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView login;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+    private EditText Age;
+    private ImageView ProfilePic;
+    String name,email,age,password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +74,11 @@ public class RegistrationActivity extends AppCompatActivity {
 ////
 ////                               Toast.makeText(RegistrationActivity.this, "Registration Successfull", Toast.LENGTH_SHORT).show();
 ////                               startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+
+
                                sendEmailVerification();
+
+
                            }
                            else {
                                progressDialog.dismiss();
@@ -82,20 +92,28 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
     private void setUpVariables(){
+
+
         UserName=(EditText)findViewById(R.id.usName);
         Email=(EditText)findViewById(R.id.email);
         Pass=(EditText)findViewById(R.id.psw);
         SignUp=(Button) findViewById(R.id.btn2);
         login=(TextView) findViewById(R.id.txt2);
+        Age= (EditText) findViewById(R.id.etAge);
+        ProfilePic=(ImageView)findViewById(R.id.img);
+
+
+
     }
     private boolean validate(){
         Boolean result=false;
 
-        String name=UserName.getText().toString();
-        String password=Pass.getText().toString();
-        String email=Email.getText().toString();
+        name=UserName.getText().toString();
+        age=Age.getText().toString();
+        password=Pass.getText().toString();
+        email=Email.getText().toString();
 
-        if(name.isEmpty() || password.isEmpty() || email.isEmpty()){
+        if(name.isEmpty() || password.isEmpty() || email.isEmpty() || age.isEmpty()){
             Toast.makeText(this,"Please enter all the details",Toast.LENGTH_SHORT).show();
         }
         else{
@@ -114,6 +132,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
+                        sendUserData();
                         Toast.makeText(RegistrationActivity.this,"Succesfully Registered,Verification Mail send",Toast.LENGTH_LONG).show();
                         firebaseAuth.signOut();
                         finish();
@@ -126,4 +145,34 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
+
+    private void sendUserData(){
+        FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+        DatabaseReference myRef= firebaseDatabase.getReference(firebaseAuth.getUid());
+
+        UserProfile userProfile=new UserProfile(name,age,email);
+
+        myRef.setValue(userProfile);
+
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
