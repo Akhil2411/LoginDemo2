@@ -9,18 +9,18 @@
 
 </item>
     <item
-        android:id="@+id/Settings"
+        android:id="@+id/Profile"
         android:orderInCategory="200"
         app:showAsAction="never"
-        android:title="Settings">
+        android:title="Profile">
 
     </item>
 
     <item
-        android:id="@+id/Refresh"
+        android:id="@+id/Settings"
         android:orderInCategory="300"
         app:showAsAction="never"
-        android:title="Refresh">
+        android:title="Settings">
 
     </item>
 </menu>

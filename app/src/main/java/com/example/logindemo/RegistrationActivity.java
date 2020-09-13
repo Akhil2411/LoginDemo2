@@ -147,12 +147,14 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     private void sendUserData(){
-        FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-        DatabaseReference myRef= firebaseDatabase.getReference(firebaseAuth.getUid());
+        FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();   //get am instance of firebase database
 
-        UserProfile userProfile=new UserProfile(name,age,email);
 
-        myRef.setValue(userProfile);
+        DatabaseReference myRef= firebaseDatabase.getReference(firebaseAuth.getUid());    //get a reference by refering the users id which is unique
+
+        UserProfile userProfile=new UserProfile(name,age,email);    //creating an object of userprofile class and passing the parameters
+
+        myRef.setValue(userProfile);   //the values are set by refering to the userid
 
     }
 

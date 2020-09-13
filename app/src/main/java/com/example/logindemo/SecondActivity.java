@@ -56,9 +56,14 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {   //handle click events on the menu
         switch (item.getItemId()){
-            case R.id.LogoutMenu:
+            case R.id.LogoutMenu: {
                 Logout();
                 break;
+            }
+            case R.id.Profile:{
+                startActivity(new Intent(SecondActivity.this,ProfileActivity.class));
+            }
+
 
         }
         return super.onOptionsItemSelected(item);
