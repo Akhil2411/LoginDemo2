@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(user!=null){   //if user is not empty,then user has already logged in
 
-            finish();   //finish(destroys) the registration activity
+            finish();   //finish(destroys) the main activity
 
             startActivity(new Intent(MainActivity.this,SecondActivity.class));//moves directly to second activity
         }
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (ErrorFree()) {
+                if (ErrorFree()) {         //checks if the boolean function ErrorFree is true...if true then
 
                     Validate(UserName.getText().toString(), Password.getText().toString()); //passes login validation to the function validation
                 }
@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void Validate(String UserName,String UserPass){  //user and password validation
+
+
         progressDialog.setMessage("Loading"); //displayed at the time of loading at time when button clicked
         progressDialog.show();  //to show the progress dialogue
 
@@ -117,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //                  startActivity(new Intent(MainActivity.this,SecondActivity.class)); //move to next activity
 
-                  checkEmailVerification();  //invoke the function
+                  checkEmailVerification();  //invoke the function to check if the email is verified
 
               }else{ //if task is not completed
 
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private boolean ErrorFree(){
+    private boolean ErrorFree(){      //function to check weather both the fields are filled
         boolean result=false;
 
         String User=UserName.getText().toString();
@@ -162,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         if(emailFlag){
             finish();
             startActivity(new Intent(MainActivity.this,SecondActivity.class));
-            Toast.makeText(this,"Login Succesfull",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Login Successfull",Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this,"Please verify Your Email",Toast.LENGTH_SHORT).show();
             firebaseAuth.signOut(); //signOut of the firebase

@@ -40,7 +40,7 @@ public class SecondActivity extends AppCompatActivity {
             startActivity(new Intent(SecondActivity.this,MainActivity.class));  //go to mainactivity
         }
 
-    //press cntrl+o
+    //press alt+0
 
 
     @Override

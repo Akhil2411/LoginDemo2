@@ -41,19 +41,33 @@ public class PasswordActivity extends AppCompatActivity {
                 progressDialog.show();
 
                 if (userEmail.equals("")){
+
                     progressDialog.dismiss();
+
+
                     Toast.makeText(PasswordActivity.this,"Please Enter Your registered email id",Toast.LENGTH_SHORT).show();
                 }else{
+
                     firebaseAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
+
+
                                 progressDialog.dismiss();
+
+
                                 Toast.makeText(PasswordActivity.this,"Password reset email send",Toast.LENGTH_SHORT).show();
+
+
                                 finish();
                                 startActivity(new Intent(PasswordActivity.this,MainActivity.class));
                             }else{
+
+
                                 progressDialog.dismiss();
+
+
                                 Toast.makeText(PasswordActivity.this,"Account does not Exist",Toast.LENGTH_SHORT).show();
                             }
 

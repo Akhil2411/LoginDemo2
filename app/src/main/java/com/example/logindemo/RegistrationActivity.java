@@ -70,14 +70,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                                progressDialog.dismiss();
 
-//                               Log.d("tag","done");
-////
-////                               Toast.makeText(RegistrationActivity.this, "Registration Successfull", Toast.LENGTH_SHORT).show();
-////                               startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
-
-
                                sendEmailVerification();
-
 
                            }
                            else {
@@ -91,7 +84,10 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
     }
-    private void setUpVariables(){
+
+
+
+    private void setUpVariables(){ //function to setup value of variables
 
 
         UserName=(EditText)findViewById(R.id.usName);
@@ -105,7 +101,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     }
-    private boolean validate(){
+    private boolean validate(){       //function to check if all the fields are filled
         Boolean result=false;
 
         name=UserName.getText().toString();
@@ -122,7 +118,11 @@ public class RegistrationActivity extends AppCompatActivity {
         return result;
     }
 
-    private void sendEmailVerification(){
+
+
+
+    private void sendEmailVerification(){   //function to send verification email
+
         FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();   //get the user trying to register
 
         if(firebaseUser!=null){
@@ -132,10 +132,17 @@ public class RegistrationActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
-                        sendUserData();
+
+                        sendUserData(); //function to send the data to firebase database
+
+
                         Toast.makeText(RegistrationActivity.this,"Succesfully Registered,Verification Mail send",Toast.LENGTH_LONG).show();
+
+
                         firebaseAuth.signOut();
                         finish();
+
+
                         startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
                     }else{
                         Toast.makeText(RegistrationActivity.this,"Unable to send Verification Mail",Toast.LENGTH_SHORT).show();
@@ -147,7 +154,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     private void sendUserData(){
-        FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();   //get am instance of firebase database
+
+
+        FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();   //get an instance of firebase database
 
 
         DatabaseReference myRef= firebaseDatabase.getReference(firebaseAuth.getUid());    //get a reference by refering the users id which is unique

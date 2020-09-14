@@ -8,8 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,69 +18,71 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ProfileActivity extends AppCompatActivity {
+public class UpdateProfile extends AppCompatActivity {
 
-
-    private ImageView ProfilePic;
-    private TextView ProfileName,ProfileAge,ProfileEmail;
-    private Button EditBtn;
+    private EditText UserName,UserAge,UserEmail;
+    private Button SaveBtn;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private Button ChangePassword;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_update_profile);
 
-        ProfilePic=findViewById(R.id.ProfileImage);
-        ProfileName=findViewById(R.id.ProfileName);     //type casting not required
-        ProfileAge=findViewById(R.id.ProfileAge);
-        ProfileEmail=findViewById(R.id.ProfileEmail);
-        EditBtn=findViewById(R.id.ProfileEditBtn);
-        ChangePassword=findViewById(R.id.ChangePassword);
+        UserName=findViewById(R.id.etEditName);
+        UserAge=findViewById(R.id.etEditAge);
+        UserEmail=findViewById(R.id.etEditEmail);
+        SaveBtn=findViewById(R.id.saveButton);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         firebaseAuth=FirebaseAuth.getInstance();
-        firebaseDatabase=FirebaseDatabase.getInstance();
+        firebaseDatabase= FirebaseDatabase.getInstance();
 
 
-        DatabaseReference databaseReference=firebaseDatabase.getReference(firebaseAuth.getUid());
+        final DatabaseReference databaseReference=firebaseDatabase.getReference(firebaseAuth.getUid());
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserProfile userProfile=snapshot.getValue(UserProfile.class);
 
-                ProfileName.setText("Name:"+userProfile.getName());
-                ProfileAge.setText("Age:"+userProfile.getAge());
-                ProfileEmail.setText("Email:"+userProfile.getEmail());
+                UserName.setText(userProfile.getName());
+                UserAge.setText(userProfile.getAge());
+                UserEmail.setText(userProfile.getEmail());
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ProfileActivity.this,error.getCode(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(UpdateProfile.this,error.getCode(),Toast.LENGTH_SHORT).show();
             }
         });
 
-        EditBtn.setOnClickListener(new View.OnClickListener() {
+        SaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ProfileActivity.this,UpdateProfile.class));
+
+
+                String name=UserName.getText().toString();
+                String age=UserAge.getText().toString();
+                String email=UserEmail.getText().toString();
+
+
+                UserProfile userProfile=new UserProfile(name,age,email);
+
+                databaseReference.setValue(userProfile);
+
+                Toast.makeText(UpdateProfile.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
+
+                finish();
+
+
+
             }
         });
-
-        ChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ProfileActivity.this,UpdatePassword.class));
-            }
-        });
-
 
     }
 
@@ -99,7 +100,6 @@ public class ProfileActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-
 
 
 
